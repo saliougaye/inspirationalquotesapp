@@ -1,13 +1,19 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"flag"
 	"fmt"
+	"inspirationalquotes/uploader/helper"
+	"inspirationalquotes/uploader/models"
+	"inspirationalquotes/uploader/util"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/xuri/excelize/v2"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 var EXT_VALID = []string{
@@ -18,17 +24,7 @@ type input struct {
 	filepath string
 }
 
-type quote struct {
-	quote  string
-	author string
-	genre  string
-}
-
-func (q quote) toString() string {
-	quote := fmt.Sprintf("%s\n%s\n%s\n", q.quote, q.genre, q.author)
-
-	return quote
-}
+var collection = helper.ConnectDB()
 
 func main() {
 	flag.Usage = usage
@@ -36,22 +32,18 @@ func main() {
 	file, err := getData()
 
 	if err != nil {
-		exit(err)
+		util.Exit(err)
 	}
 
 	if _, err := isFileValid(file.filepath); err != nil {
-		exit(err)
+		util.Exit(err)
 	}
 
 	quotes := parseExcel(file.filepath)
 
-	for i, quote := range quotes {
-		if i == 10 {
-			return
-		}
+	uploadQuotes(quotes)
 
-		fmt.Println(quote.toString())
-	}
+	fmt.Println("upload completed")
 
 }
 
@@ -103,16 +95,16 @@ func isExtensionValid(extension string) bool {
 	return false
 }
 
-func parseExcel(filename string) []quote {
+func parseExcel(filename string) []models.Quote {
 	f, err := excelize.OpenFile(filename)
 
 	if err != nil {
-		exit(err)
+		util.Exit(err)
 	}
 
 	defer func() {
 		if err := f.Close(); err != nil {
-			exit(err)
+			util.Exit(err)
 		}
 	}()
 
@@ -120,20 +112,20 @@ func parseExcel(filename string) []quote {
 
 	sheet := sheets[0]
 
-	var quotes []quote
+	var quotes []models.Quote
 
 	rows, err := f.GetRows(sheet)
 
 	if err != nil {
-		exit(err)
+		util.Exit(err)
 	}
 
 	for _, row := range rows {
 		if len(row) >= 3 {
-			quote := quote{
-				quote:  row[0],
-				author: row[1],
-				genre:  row[2],
+			quote := models.Quote{
+				Quote:  strings.TrimSpace(row[0]),
+				Author: strings.TrimSpace(row[1]),
+				Genre:  strings.TrimSpace(row[2]),
 			}
 
 			quotes = append(quotes, quote)
@@ -144,9 +136,28 @@ func parseExcel(filename string) []quote {
 
 }
 
-func exit(err error) {
+func uploadQuotes(quotes []models.Quote) {
+	for i, quote := range quotes {
 
-	fmt.Fprintf(os.Stderr, "error: %v\n", err)
-	os.Exit(1)
+		var quoteBson bson.D
+		var err error
+		quote.ToBson(&quoteBson, err)
 
+		if err != nil {
+			util.Exit(err)
+		}
+
+		_, err = collection.InsertOne(context.TODO(), quoteBson)
+
+		var res string
+
+		if err != nil {
+			res = fmt.Sprintf("%d row not inserted, Error: %s", i, err)
+		} else {
+			res = fmt.Sprintf("%d inserted correctly", i)
+		}
+
+		fmt.Println(res)
+
+	}
 }
