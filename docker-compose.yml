@@ -19,3 +19,14 @@ services:
       - DATABASE_URL=mongodb://root:example@db:27017/inspirationalappdb?authSource=admin&ssl=false
     depends_on:
       - db
+  
+  # fe:
+  #   build: 
+  #     context: ./frontend/
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "8080:8080"
+  #   environment:
+  #     - API=http://be:3000/api/quote
+  #   depends_on:
+  #     - be

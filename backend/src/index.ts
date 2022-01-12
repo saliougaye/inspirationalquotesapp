@@ -23,6 +23,11 @@ app.get<{
 	}
 
 	const quoteCounts = await prisma.quote.count();
+
+	if (quoteCounts == 0) {
+		return []
+	}
+
 	const quotes = [];
 	let prev = -1;
 

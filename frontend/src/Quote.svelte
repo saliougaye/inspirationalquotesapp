@@ -1,11 +1,11 @@
 <script lang="ts">
     import { IQuote } from './types/IQuote';
     import { Firework } from 'svelte-loading-spinners';
-    import Typewriter from 'svelte-typewriter'
+    import Typewriter from 'svelte-typewriter';
 
-
+    const API_URL = process['env']['API'];
     const fetchQuote = ( async () : Promise<IQuote[]> => {
-        const response = await fetch('http://localhost:3000/api/quote');
+        const response = await fetch(API_URL);
 
         return await response.json()
     })()
@@ -40,15 +40,16 @@
     <div id="error">
         <Typewriter cascade interval={30}>
             <div class="text-error">
-                <p>Error occured on fetch</p>
+                <p>Everyone is wrong, especially me. there is something wrong, sorry</p>
             </div>
             
             <div class="author-error">
-                <p>The Creator</p>
+                <p>Me</p>
             </div>>
         </Typewriter>
     </div>
     {/await}
+    
 </main>
 
 <style>
