@@ -1,6 +1,7 @@
 <script lang="ts">
     import { IQuote } from './types/IQuote';
-    import { Firework } from 'svelte-loading-spinners'
+    import { Firework } from 'svelte-loading-spinners';
+    import Typewriter from 'svelte-typewriter'
 
 
     const fetchQuote = ( async () : Promise<IQuote[]> => {
@@ -21,20 +22,32 @@
 
         />
     </div>
-    {:then data} 
+    {:then data}
     <div id="quote-box">
-        <div class="quote">
-            <p>{data[0].quote}</p>
-        </div>
-        <div class="author">
-            <p>{data[0].author}</p>
-        </div>
+        <Typewriter cascade interval={30}>
+
+            <div class="quote">
+                <p>{data[0].quote}</p>
+            </div>
+            <div class="author">
+                <p>{data[0].author}</p>
+            </div>
+        </Typewriter> 
     </div>
+    
     {:catch error}
-        <div id="error">
-            <p>Error occured on fetch</p>
-            <pre>{error}</pre>
-        </div>
+    
+    <div id="error">
+        <Typewriter cascade interval={30}>
+            <div class="text-error">
+                <p>Error occured on fetch</p>
+            </div>
+            
+            <div class="author-error">
+                <p>The Creator</p>
+            </div>>
+        </Typewriter>
+    </div>
     {/await}
 </main>
 
@@ -49,31 +62,37 @@
         justify-content: center;
         align-items: center;
     }
-    #quote p {
+    #quote p,
+    #error p {
         color: white;
         font-family: 'lisFont', 'Amatic SC', 'Dongle',sans-serif;
     }
 
-    #quote-box {
+    #quote-box,
+    #error {
         width: 90%;
         display: flex;
         flex-flow: column nowrap;
     }
 
-    #quote-box .quote {
+    #quote-box .quote,
+    #error .text-error {
         width: 100%;
         text-align: center;
     }
 
-    #quote-box .quote p {
+    #quote-box .quote p,
+    #error .text-error p {
         font-size: 36px;
     }
 
-    #quote-box .author {
+    #quote-box .author,
+    #error .author-error {
         width: 100%;
         text-align: end;
     }
-    #quote-box .author p {
+    #quote-box .author p,
+    #error .author-error p {
         font-size: 28px;
     }
 
