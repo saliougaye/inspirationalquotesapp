@@ -1,24 +1,50 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from "@prisma/client";
+import fastify from "fastify";
+import { IGetQuote } from "./interfaces/IGetQuote";
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
-async function main() {
-  // Connect the client
-  await prisma.$connect()
-  // ... you will write your Prisma Client queries here
+const app = fastify({
+	logger: true,
+});
 
+app.get<{
+	Querystring: IGetQuote;
+}>("/api/quote", async (req, reply) => {
+	let { n } = req?.query;
+	
 
-  const allQuotes = await prisma.quote.findMany({
-      take: 10
-  });
+	if (!n) {
+		n = 1;
+	}
 
-  console.log(allQuotes)
-}
+	const quoteCounts = await prisma.quote.count();
+	const quotes = [];
+	let prev = -1;
 
-main()
-  .catch((e) => {
-    throw e
-  })
-  .finally(async () => {
-    await prisma.$disconnect()
-  })
+	for (let i = 0; i < n; i++) {
+		let skip: number;
+		do {
+			skip = Math.floor(Math.random() * quoteCounts);
+		} while (skip == prev);
+
+		prev = skip;
+
+		let quote = await prisma.quote.findFirst({
+			skip: skip,
+		});
+
+		quotes.push(quote);
+	}
+
+	return quotes;
+});
+
+app.listen(3000, (err, address) => {
+	if (err) {
+		console.error(err);
+		process.exit(0);
+	}
+
+	console.log(`Server Listening at: ${address}`);
+});
