@@ -1,12 +1,16 @@
 import { PrismaClient } from "@prisma/client";
 import fastify from "fastify";
 import { IGetQuote } from "./interfaces/IGetQuote";
+import fastifyCors	 from 'fastify-cors'
 
 const prisma = new PrismaClient();
 
 const app = fastify({
 	logger: true,
 });
+
+
+app.register(fastifyCors, {});
 
 app.get<{
 	Querystring: IGetQuote;
@@ -40,7 +44,7 @@ app.get<{
 	return quotes;
 });
 
-app.listen(3000, (err, address) => {
+app.listen(3000, '0.0.0.0', (err, address) => {
 	if (err) {
 		console.error(err);
 		process.exit(0);

@@ -8,3 +8,14 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
+  
+  be:
+    build: 
+      context: ./backend/
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=mongodb://root:example@db:27017/inspirationalappdb?authSource=admin&ssl=false
+    depends_on:
+      - db
