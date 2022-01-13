@@ -2,7 +2,7 @@
     import { IQuote } from './types/IQuote';
     import { Firework } from 'svelte-loading-spinners';
     import Typewriter from 'svelte-typewriter';
-
+    
     const API_URL = process['env']['API'];
     const fetchQuote = ( async () : Promise<IQuote[]> => {
         const response = await fetch(API_URL);
