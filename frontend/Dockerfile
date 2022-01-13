@@ -12,12 +12,17 @@ COPY ./src ./src
 
 COPY ./public ./public
 
-COPY ./.env ./.env 
+ARG API
+
+ENV API $API 
+
+RUN touch ./.env
+
+RUN printenv > ./.env
 
 RUN npm run build
 
-EXPOSE 8080
-
 ENV HOST=0.0.0.0
+
 
 CMD [ "npm", "start" ]
