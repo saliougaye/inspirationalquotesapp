@@ -1,4 +1,4 @@
-.env
+.env*
 *.xlsx
 node_modules
 .vscode

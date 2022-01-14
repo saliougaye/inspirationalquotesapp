@@ -1,5 +1,7 @@
 import 'package:app/app.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:workmanager/workmanager.dart';
 
@@ -7,6 +9,12 @@ import 'data.dart';
 
 
 void main() async {
+
+  if (kReleaseMode) {
+    await dotenv.load(fileName: '.env.production');
+  } else {
+    await dotenv.load(fileName: '.env');
+  }
   
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -72,7 +80,7 @@ Future _showNotificationWithDefaultSound(FlutterLocalNotificationsPlugin flip) a
   final data = Data();
   final quote = await data.fetchQuote();
 
-  await flip.show(0, 'Inspirational',
+  await flip.show(0, dotenv.env['APP_NAME'],
     '${quote.quote} - ${quote.author}',
     platformChannelSpecifics, payload: 'Default_Sound'
   );

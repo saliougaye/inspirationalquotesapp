@@ -75,7 +75,10 @@ class _HomeState extends State<Home> {
             );
           }
 
-          return const CircularProgressIndicator();
+          return const CircularProgressIndicator(
+            color: Colors.white,
+            backgroundColor: Colors.transparent,
+          );
         },
       )),
     );

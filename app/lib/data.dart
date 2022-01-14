@@ -1,10 +1,11 @@
 import 'dart:convert';
 
 import 'package:app/quote.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class Data {
-  final String url = "http://10.0.2.2:8080";
+  final String url = dotenv.env['API_ENDPOINT']!;
 
   Future<Quote> fetchQuote() async {
     try {
