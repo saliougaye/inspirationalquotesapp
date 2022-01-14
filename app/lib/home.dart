@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:app/footer.dart';
 import 'package:app/quote.dart';
 import 'package:flutter/material.dart';
@@ -39,22 +40,35 @@ class _HomeState extends State<Home> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    quote.quote,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'CustomFont',
-                      fontSize: 48,
-                    ),
-                    textAlign: TextAlign.center,
+                  AnimatedTextKit(
+                    totalRepeatCount: 1,
+                    animatedTexts: [
+                      TypewriterAnimatedText(
+                        quote.quote,
+                        textStyle: const TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'CustomFont',
+                          fontSize: 48,
+                        ),
+                        textAlign: TextAlign.center,
+                        speed: const Duration(milliseconds: 35) 
+                      )
+                    ]
                   ),
                   const Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 30)),
-                  Text(
-                    quote.author,
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'CustomFont',
-                        fontSize: 38),
+                  AnimatedTextKit(
+                    totalRepeatCount: 1,
+                    animatedTexts: [
+                      TypewriterAnimatedText(
+                        quote.author,
+                        textStyle: const TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'CustomFont',
+                            fontSize: 38),
+                        textAlign: TextAlign.center,
+                        speed: const Duration(milliseconds: 55) 
+                      ), 
+                    ]
                   )
                 ],
               ),
