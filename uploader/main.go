@@ -22,6 +22,7 @@ var EXT_VALID = []string{
 
 type input struct {
 	filepath string
+	n        int
 }
 
 var collection = helper.ConnectDB()
@@ -39,7 +40,7 @@ func main() {
 		util.Exit(err)
 	}
 
-	quotes := parseExcel(file.filepath)
+	quotes := parseExcel(file)
 
 	uploadQuotes(quotes)
 
@@ -54,6 +55,7 @@ func usage() {
 }
 
 func getData() (input, error) {
+	flagNLines := flag.Int("n", -1, "number of lines to upload")
 
 	if len(os.Args) < 2 {
 		return input{}, errors.New("filepath is required")
@@ -63,7 +65,9 @@ func getData() (input, error) {
 
 	file := flag.Arg(0)
 
-	return input{file}, nil
+	fmt.Println(*flagNLines)
+
+	return input{file, *flagNLines}, nil
 }
 
 func isFileValid(file string) (bool, error) {
@@ -95,8 +99,8 @@ func isExtensionValid(extension string) bool {
 	return false
 }
 
-func parseExcel(filename string) []models.Quote {
-	f, err := excelize.OpenFile(filename)
+func parseExcel(input input) []models.Quote {
+	f, err := excelize.OpenFile(input.filepath)
 
 	if err != nil {
 		util.Exit(err)
@@ -131,6 +135,8 @@ func parseExcel(filename string) []models.Quote {
 			quotes = append(quotes, quote)
 		}
 	}
+
+	quotes = quotes[:input.n]
 
 	return quotes
 
