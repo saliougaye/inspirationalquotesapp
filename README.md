@@ -17,6 +17,11 @@
 - Uploader DB: Go 
 ```
 
+## ✅ TO-DO
+
+- [] Deploy App
+- [] Use Terraform
+
 
 
 <br/>
