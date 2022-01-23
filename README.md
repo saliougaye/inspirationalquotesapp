@@ -19,8 +19,8 @@
 
 ## ✅ TO-DO
 
-- [] Deploy App
-- [] Use Terraform
+- [ ] Deploy App
+- [ ] Use Terraform
 
 
 
