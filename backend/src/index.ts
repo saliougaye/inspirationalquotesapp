@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import fastify from "fastify";
 import { IGetQuote } from "./interfaces/IGetQuote";
-import fastifyCors	 from 'fastify-cors'
+import fastifyCors from '@fastify/cors'
 
 const prisma = new PrismaClient();
 

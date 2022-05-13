@@ -8,7 +8,7 @@ import 'package:workmanager/workmanager.dart';
 import 'data.dart';
 
 
-void main() async {
+Future<void> main() async {
 
   if (kReleaseMode) {
     await dotenv.load(fileName: '.env.production');
@@ -18,16 +18,16 @@ void main() async {
   
   WidgetsFlutterBinding.ensureInitialized();
 
-  Workmanager().initialize(
+  await Workmanager().initialize(
     callbackDispatcher,
     isInDebugMode: true
   );
 
-  Workmanager().registerPeriodicTask(
+  await Workmanager().registerPeriodicTask(
     "3", 
     "periodicTask",
     frequency: const Duration(
-      hours: 24
+      minutes: 15
     )
   );
 
@@ -37,7 +37,7 @@ void main() async {
 
 
 void callbackDispatcher() {
-  Workmanager().executeTask((taskName, inputData) {
+  Workmanager().executeTask((taskName, inputData) async {
     FlutterLocalNotificationsPlugin flip = FlutterLocalNotificationsPlugin();
 
     var android = const AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -52,7 +52,7 @@ void callbackDispatcher() {
 
     flip.initialize(settings);
 
-    _showNotificationWithDefaultSound(flip);
+    await _showNotificationWithDefaultSound(flip);
 
     return Future.value(true);
   });

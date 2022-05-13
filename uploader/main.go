@@ -55,7 +55,7 @@ func usage() {
 }
 
 func getData() (input, error) {
-	flagNLines := flag.Int("n", -1, "number of lines to upload")
+	flagNLines := flag.Int("n", 10, "number of lines to upload")
 
 	if len(os.Args) < 2 {
 		return input{}, errors.New("filepath is required")
