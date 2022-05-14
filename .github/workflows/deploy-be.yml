@@ -34,6 +34,7 @@ jobs:
           git config --global user.name 'Github Action'
           git config --global user.email 'https://github.com/saliougaye/inspirationalquotesapp'
           git commit -am "add heroku.yml"
+          git push
       - name: Set Heroku Stack
         run: heroku stack:set container
       - name: Push to heroku
