@@ -6,6 +6,8 @@
 
 
 ## 📖 Description
+Motivational quotes for u
+
 
 <br/>
 
@@ -18,10 +20,6 @@
 ```
 
 ## ✅ TO-DO
-
-- [ ] Deploy App
-- [ ] Use Terraform
-
 
 
 <br/>

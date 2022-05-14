@@ -7,50 +7,39 @@ import 'package:workmanager/workmanager.dart';
 
 import 'data.dart';
 
-
 Future<void> main() async {
-
+  
   if (kReleaseMode) {
     await dotenv.load(fileName: '.env.production');
   } else {
     await dotenv.load(fileName: '.env');
   }
-  
+
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Workmanager().initialize(
-    callbackDispatcher,
-    isInDebugMode: true
-  );
+  await Workmanager().initialize(callbackDispatcher, isInDebugMode: false);
 
-  await Workmanager().registerPeriodicTask(
-    "3", 
-    "periodicTask",
-    frequency: const Duration(
-      minutes: 15
-    )
-  );
+  await Workmanager().registerPeriodicTask("3", "periodicTask",
+      frequency: const Duration(minutes: 15));
 
   runApp(const App());
-  
 }
-
 
 void callbackDispatcher() {
   Workmanager().executeTask((taskName, inputData) async {
     FlutterLocalNotificationsPlugin flip = FlutterLocalNotificationsPlugin();
 
     var android = const AndroidInitializationSettings('@mipmap/ic_launcher');
-    var iOS = const  IOSInitializationSettings();
-    
-    
-    var settings = InitializationSettings(
-      android: android,
-      iOS: iOS
+    var iOS = const IOSInitializationSettings();
+
+    var settings = InitializationSettings(android: android, iOS: iOS);
+
+    await flip.initialize(
+      settings,
+      onSelectNotification: (payload) {
+        print('notification');
+      },
     );
-
-
-    flip.initialize(settings);
 
     await _showNotificationWithDefaultSound(flip);
 
@@ -58,31 +47,36 @@ void callbackDispatcher() {
   });
 }
 
-Future _showNotificationWithDefaultSound(FlutterLocalNotificationsPlugin flip) async {
-   
-  // Show a notification after every 15 minute with the first
-  // appearance happening a minute after invoking the method
+Future _showNotificationWithDefaultSound(
+    FlutterLocalNotificationsPlugin flip) async {
+
+  if (kReleaseMode) {
+    await dotenv.load(fileName: '.env.production');
+  } else {
+    await dotenv.load(fileName: '.env');
+  }
+
+  
   var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
-    'channelId',
-    'channelName',
-    channelDescription: 'channelDescription',
-    importance: Importance.max,
-    priority: Priority.high
-  );
+      'inspirationalquotes_notification', 'inspirationalquotes',
+      channelDescription: 'Inspirational Quotes App',
+      importance: Importance.max,
+      priority: Priority.high);
   var iOSPlatformChannelSpecifics = const IOSNotificationDetails();
-   
+
   // initialise channel platform for both Android and iOS device.
   var platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,
-      iOS: iOSPlatformChannelSpecifics
-  );
+      iOS: iOSPlatformChannelSpecifics);
 
-  final data = Data();
-  final quote = await data.fetchQuote();
+  try {
+    final data = Data();
+    final quote = await data.fetchQuote();
 
-  await flip.show(0, dotenv.env['APP_NAME'],
-    '${quote.quote} - ${quote.author}',
-    platformChannelSpecifics, payload: 'Default_Sound'
-  );
+    await flip.show(0, dotenv.env['APP_NAME'],
+        '${quote.quote} - ${quote.author}', platformChannelSpecifics,
+        payload: 'Default_Sound');
+  } catch (e) {
+    print(e);
+  }
 }
- 
