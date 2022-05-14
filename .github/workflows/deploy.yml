@@ -1,0 +1,68 @@
+name: deploy-be
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  deploy-be:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Heroku login credentials
+        run: |
+          chmod +x ./scripts/heroku-login.sh
+          sh ./scripts/heroku-login.sh
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
+      - name: Set DATABASE_URL Config Var on Heroku 
+        run: heroku config:set DATABASE_URL=$MONGO_DB -a $HEROKU_APP_NAME
+        env:
+          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME_BE }}
+          MONGO_DB: ${{ secrets.DATABASE }}
+      - name: Add heroku.yml to root
+        run: cp ./heroku/heroku-be.yml ./heroku.yml
+      - name: Git Phase
+        run: |
+          git config --global user.name 'Github Action'
+          git config --global user.email 'https://github.com/saliougaye/inspirationalquotesapp'
+          git add heroku.yml
+          git commit -m "add heroku.yml"
+          git status
+      - name: Add Heroku remote
+        run: heroku git:remote --app $HEROKU_APP_NAME
+        env:
+          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME_BE }}
+      - name: Set Heroku Stack
+        run: heroku stack:set container
+      - name: Push to heroku
+        run: git push -f heroku main:main
+  deploy-fe:
+    needs: deploy-be
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Deploy to Heroku
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: $HEROKU_API_KEY
+          heroku_app_name: $HEROKU_APP_NAME #Must be unique in Heroku
+          heroku_email: $HEROKU_EMAIL
+          usedocker: true
+          docker_build_args: |
+            API
+          appdir: "frontend"
+          dontuseforce: 1
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
+          API: ${{ secrets.BE_URL }}
+          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME_FE }}
+        

@@ -49,7 +49,7 @@ app.get<{
 	return quotes;
 });
 
-app.listen(3000, '0.0.0.0', (err, address) => {
+app.listen(process.env.PORT || 3000, '0.0.0.0', (err, address) => {
 	if (err) {
 		console.error(err);
 		process.exit(0);
