@@ -1,7 +1,6 @@
 build:
   docker:
     be: backend/Dockerfile
-    fe: frontend/Dockerfile
     nginx: nginx/Dockerfile
   config:
     DATABASE_URL: $DATABASE_URL # substituted on gh action
@@ -9,4 +8,3 @@ build:
 
 run:
   be: npm run start:prod
-  fe: npm start
