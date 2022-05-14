@@ -59,10 +59,11 @@ jobs:
       
       - name: Add heroku.yml to root
         run: cp ./heroku/heroku-fe.yml ./heroku.yml
-      - name: Put API Url
-        run: sed -i 's%__API__%'"$BE_URL"'%g' heroku.yml
+      - name: Set API Config Var on Heroku 
+        run: heroku config:set API=$API -a $HEROKU_APP_NAME
         env:
-          BE_URL: ${{ secrets.BE_URL }}
+          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME_BE }}
+          API: ${{ secrets.BE_URL }}
       - name: Git Phase
         run: |
           git config --global user.name 'Github Action'

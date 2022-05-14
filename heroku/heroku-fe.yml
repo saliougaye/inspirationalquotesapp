@@ -1,7 +1,3 @@
-setup:
-  config:
-    API: __API__
-
 build:
   docker:
     web: frontend/Dockerfile
