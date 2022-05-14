@@ -4,6 +4,5 @@ build:
     nginx: nginx/Dockerfile
   config:
     DATABASE_URL: $DATABASE_URL # substituted on gh action
-
 run:
   be: npm run start:prod
