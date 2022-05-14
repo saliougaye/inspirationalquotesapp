@@ -19,12 +19,12 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
           HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
-      - name: Add heroku.yml to root
-        run: cp ./heroku/heroku-be.yml ./heroku.yml
-      - name: Put Database Url
-        run: sed -i 's%__DATABASE_URL__%'"$MONGO_DB"'%g' heroku.yml
+      - name: Set DATABASE_URL Config Var on Heroku 
+        run: heroku config:set DATABASE_URL=$MONGO_DB
         env:
           MONGO_DB: ${{ secrets.DATABASE }}
+      - name: Add heroku.yml to root
+        run: cp ./heroku/heroku-be.yml ./heroku.yml
       - name: Git Phase
         run: |
           git config --global user.name 'Github Action'
