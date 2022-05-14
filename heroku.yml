@@ -1,0 +1,12 @@
+build:
+  docker:
+    be: backend/Dockerfile
+    fe: frontend/Dockerfile
+    nginx: nginx/Dockerfile
+  config:
+    DATABASE_URL: $DATABASE_URL # substituted on gh action
+    API: $FE_API # substituted on gh action
+
+run:
+  be: npm run start:prod
+  fe: npm start
