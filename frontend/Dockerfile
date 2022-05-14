@@ -12,6 +12,10 @@ COPY ./src ./src
 
 COPY ./public ./public
 
+ARG API
+
+ENV API $API 
+
 RUN touch ./.env
 
 RUN printenv > ./.env
