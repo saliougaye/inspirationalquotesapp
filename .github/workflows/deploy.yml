@@ -58,8 +58,8 @@ jobs:
           usedocker: true
           docker_build_args: |
             API
-          appdir: frontend
-          branch: feature/deploy-ci-cd
+          appdir: "frontend"
+          dontuseforce: 1
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
           HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
