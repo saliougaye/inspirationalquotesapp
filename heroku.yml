@@ -1,7 +1,9 @@
 build:
   docker:
-    web: backend/Dockerfile
+    be: backend/Dockerfile
+    web: nginx/Dockerfile
   config:
     DATABASE_URL: $DATABASE_URL # substituted on gh action
+
 run:
-  web: npm run start:prod
+  be: npm run start:prod
