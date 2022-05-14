@@ -1,0 +1,7 @@
+build:
+  docker:
+    web: frontend/Dockerfile
+  config:
+    API: $API
+run:
+  web: npm start
