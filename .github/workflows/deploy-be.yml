@@ -10,8 +10,6 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
-        with:
-          ref: 'main'
       - name: Heroku login credentials
         run: ./scripts/heroku-login.sh
         env:
