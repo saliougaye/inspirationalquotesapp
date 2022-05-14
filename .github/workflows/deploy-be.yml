@@ -1,0 +1,33 @@
+name: deploy-be
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+        with:
+          ref: 'main'
+      - name: Heroku login credentials
+        run: ./scripts/heroku-login.sh
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
+      - name: Add Heroku remote
+        run: heroku git:remote --app $HEROKU_APP_NAME
+        env:
+          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+      - name: Add heroku.yml to root
+        run: cp heroku/heroku-be.yml ./heroku.yml
+      - name: Put Database Url
+        run: sed -i 's/{%DATABASE_URL%}/'"$MONGO_DB"'/g' heroku.yml
+      - name: Set Heroku Stack
+        run: heroku stack:set container
+      - name: Push to heroku
+        run: git push heroku main
+
+    

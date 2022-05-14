@@ -1,0 +1,8 @@
+build:
+  docker:
+    web: backend/Dockerfile
+  config:
+    DATABASE_URL: {%DATABASE_URL%}
+
+run:
+  be: npm run start:prod
