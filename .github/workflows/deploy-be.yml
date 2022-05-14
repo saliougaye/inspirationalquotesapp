@@ -29,6 +29,8 @@ jobs:
         run: sed -i 's%__DATABASE_URL__%'"$MONGO_DB"'%g' heroku.yml
         env:
           MONGO_DB: ${{ secrets.DATABASE }}
+      - name: List Files
+        run: ls /
       - name: Set Heroku Stack
         run: heroku stack:set container
       - name: Push to heroku
