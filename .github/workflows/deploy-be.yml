@@ -27,13 +27,14 @@ jobs:
           MONGO_DB: ${{ secrets.DATABASE }}
       - name: List Files
         run: ls ./
+      - name: Git Phase
+        run: |
+          git config --global user.name 'Github Action'
+          git config --global user.email 'https://github.com/saliougaye/inspirationalquotesapp'
+          git add heroku.yml
+          git commit -m "add heroku.yml"
       - name: Git Status
         run: git status
-      # - name: Git Phase
-      #   run: |
-      #     git config --global user.name 'Github Action'
-      #     git config --global user.email 'https://github.com/saliougaye/inspirationalquotesapp'
-      #     git commit -am "add heroku.yml"
       # - name: Add Heroku remote
       #   run: heroku git:remote --app $HEROKU_APP_NAME
       #   env:
