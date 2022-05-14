@@ -2,7 +2,7 @@ name: deploy-be
 on:
   push:
     branches:
-      - 'feature/deploy-ci-cd'
+      - 'main'
 
 jobs:
   deploy-be:
@@ -40,7 +40,7 @@ jobs:
       - name: Set Heroku Stack
         run: heroku stack:set container
       - name: Push to heroku
-        run: git push -f heroku feature/deploy-ci-cd:main
+        run: git push -f heroku main:main
   deploy-fe:
     needs: deploy-be
     runs-on: ubuntu-latest
