@@ -19,10 +19,6 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
           HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
-      - name: Add Heroku remote
-        run: heroku git:remote --app $HEROKU_APP_NAME
-        env:
-          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME_BE }}
       - name: Add heroku.yml to root
         run: cp ./heroku/heroku-be.yml ./heroku.yml
       - name: Put Database Url
@@ -35,6 +31,10 @@ jobs:
           git config --global user.email 'https://github.com/saliougaye/inspirationalquotesapp'
           git commit -am "add heroku.yml"
           git push
+      - name: Add Heroku remote
+        run: heroku git:remote --app $HEROKU_APP_NAME
+        env:
+          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME_BE }}
       - name: Set Heroku Stack
         run: heroku stack:set container
       - name: Push to heroku
