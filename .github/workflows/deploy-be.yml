@@ -24,7 +24,7 @@ jobs:
       - name: Add heroku.yml to root
         run: cp heroku/heroku-be.yml ./heroku.yml
       - name: Put Database Url
-        run: sed -i "s/__DATABASE_URL__/'"$MONGO_DB"'/g" heroku.yml
+        run: sed -i 's%__DATABASE_URL__%'"$MONGO_DB"'%g' heroku.yml
         env:
           MONGO_DB: ${{ secrets.DATABASE }}
       - name: Set Heroku Stack
