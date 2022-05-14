@@ -1,7 +1,6 @@
 build:
   docker:
     be: backend/Dockerfile
-    nginx: nginx/Dockerfile
   config:
     DATABASE_URL: $DATABASE_URL # substituted on gh action
 run:
