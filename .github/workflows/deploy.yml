@@ -42,6 +42,7 @@ jobs:
       - name: Push to heroku
         run: git push -f heroku feature/deploy-ci-cd:main
   deploy-fe:
+    needs: deploy-be
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
