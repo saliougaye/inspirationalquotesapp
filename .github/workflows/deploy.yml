@@ -58,11 +58,9 @@ jobs:
           usedocker: true
           docker_build_args: |
             API
+          appdir: frontend
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
           HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
           API: ${{ secrets.BE_URL }}
-        appdir: "frontend"
-
-
-  
+        
