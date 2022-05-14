@@ -2,7 +2,7 @@ build:
   docker:
     web: backend/Dockerfile
   config:
-    DATABASE_URL: {%DATABASE_URL%}
+    DATABASE_URL: __DATABASE_URL__
 
 run:
   be: npm run start:prod
