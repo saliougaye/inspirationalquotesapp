@@ -55,7 +55,7 @@ func usage() {
 }
 
 func getData() (input, error) {
-	flagNLines := flag.Int("n", 10, "number of lines to upload")
+	flagNLines := flag.Int("n", -1, "number of lines to upload")
 
 	if len(os.Args) < 2 {
 		return input{}, errors.New("filepath is required")
@@ -64,8 +64,6 @@ func getData() (input, error) {
 	flag.Parse()
 
 	file := flag.Arg(0)
-
-	fmt.Println(*flagNLines)
 
 	return input{file, *flagNLines}, nil
 }
@@ -136,7 +134,9 @@ func parseExcel(input input) []models.Quote {
 		}
 	}
 
-	quotes = quotes[:input.n]
+	if input.n != -1 {
+		quotes = quotes[:input.n]
+	}
 
 	return quotes
 

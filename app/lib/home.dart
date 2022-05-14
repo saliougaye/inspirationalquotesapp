@@ -14,14 +14,27 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   late Future<Quote> quote;
+  final data = Data();
 
   @override
   void initState() {
     super.initState();
 
-    final data = Data();
+    try {
+      quote = data.fetchQuote();  
+    } catch (e) {
+      quote = Future.value(
+        Quote(
+          id: "-1",
+          quote:
+              "Everyone is wrong, especially me. there is something wrong, sorry",
+          author: "Me",
+          genre: "Error"
+        )
+      );
+    }
 
-    quote = data.fetchQuote();
+    
   }
 
   @override
