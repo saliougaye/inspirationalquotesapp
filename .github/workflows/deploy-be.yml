@@ -14,8 +14,8 @@ jobs:
           fetch-depth: 0
       - name: Heroku login credentials
         run: |
-          chmod +x scripts/heroku-login.sh
-          sh scripts/heroku-login.sh
+          chmod +x ./scripts/heroku-login.sh
+          sh ./scripts/heroku-login.sh
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
           HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
@@ -24,13 +24,13 @@ jobs:
         env:
           HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME_BE }}
       - name: Add heroku.yml to root
-        run: cp heroku/heroku-be.yml ./heroku.yml
+        run: cp ./heroku/heroku-be.yml ./heroku.yml
       - name: Put Database Url
         run: sed -i 's%__DATABASE_URL__%'"$MONGO_DB"'%g' heroku.yml
         env:
           MONGO_DB: ${{ secrets.DATABASE }}
       - name: List Files
-        run: ls /
+        run: ls ./
       - name: Set Heroku Stack
         run: heroku stack:set container
       - name: Push to heroku
