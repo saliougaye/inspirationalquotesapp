@@ -25,19 +25,22 @@ jobs:
         run: sed -i 's%__DATABASE_URL__%'"$MONGO_DB"'%g' heroku.yml
         env:
           MONGO_DB: ${{ secrets.DATABASE }}
-      - name: Git Phase
-        run: |
-          git config --global user.name 'Github Action'
-          git config --global user.email 'https://github.com/saliougaye/inspirationalquotesapp'
-          git commit -am "add heroku.yml"
-          git push
-      - name: Add Heroku remote
-        run: heroku git:remote --app $HEROKU_APP_NAME
-        env:
-          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME_BE }}
-      - name: Set Heroku Stack
-        run: heroku stack:set container
-      - name: Push to heroku
-        run: git push heroku HEAD:main
+      - name: List Files
+        run: ls ./
+      - name: Git Status
+        run: git status
+      # - name: Git Phase
+      #   run: |
+      #     git config --global user.name 'Github Action'
+      #     git config --global user.email 'https://github.com/saliougaye/inspirationalquotesapp'
+      #     git commit -am "add heroku.yml"
+      # - name: Add Heroku remote
+      #   run: heroku git:remote --app $HEROKU_APP_NAME
+      #   env:
+      #     HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME_BE }}
+      # - name: Set Heroku Stack
+      #   run: heroku stack:set container
+      # - name: Push to heroku
+      #   run: git push heroku HEAD:main
 
     
