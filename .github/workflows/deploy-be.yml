@@ -31,8 +31,9 @@ jobs:
           MONGO_DB: ${{ secrets.DATABASE }}
       - name: Git Phase
         run: |
-          git add heroku.yml
-          git commit -m 'add heroku.yml'
+          git config --global user.name 'Github Action'
+          git config --global user.email 'https://github.com/saliougaye/inspirationalquotesapp'
+          git commit -am "add heroku.yml"
       - name: Set Heroku Stack
         run: heroku stack:set container
       - name: Push to heroku
