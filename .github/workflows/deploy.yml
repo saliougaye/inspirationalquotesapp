@@ -50,19 +50,19 @@ jobs:
         with:
           fetch-depth: 0
       - name: Deploy to Heroku
-        - uses: akhileshns/heroku-deploy@v3.12.12
-          with:
-            heroku_api_key: $HEROKU_API_KEY
-            heroku_app_name: $HEROKU_APP_NAME #Must be unique in Heroku
-            heroku_email: $HEROKU_EMAIL
-            usedocker: true
-            docker_build_args: |
-              API
-          env:
-            HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-            HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
-            API: ${{ secrets.BE_URL }}
-          appdir: "frontend"
+      - uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: $HEROKU_API_KEY
+          heroku_app_name: $HEROKU_APP_NAME #Must be unique in Heroku
+          heroku_email: $HEROKU_EMAIL
+          usedocker: true
+          docker_build_args: |
+            API
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
+          API: ${{ secrets.BE_URL }}
+        appdir: "frontend"
 
 
-    
+  
