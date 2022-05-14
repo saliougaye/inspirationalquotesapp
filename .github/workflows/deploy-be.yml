@@ -34,6 +34,6 @@ jobs:
       - name: Set Heroku Stack
         run: heroku stack:set container
       - name: Push to heroku
-        run: git push heroku feature/deploy-ci-cd:main
+        run: git push heroku main
 
     
