@@ -1,9 +1,12 @@
 name: deploy-fe
 on:
   workflow_run:
-    workflows: [deploy-be]
+    workflows:
+      - deploy-be
     types:
       - completed
+    branches:
+      - 'feature/deploy-ci-cd'
 
 jobs:
   deploy:
