@@ -1,8 +1,12 @@
+setup:
+  config:
+    DATABASE_URL: __DATABASE_URL__
+
 build:
   docker:
     web: backend/Dockerfile
   config:
-    DATABASE_URL: __DATABASE_URL__
+    DATABASE_URL: $DATABASE_URL
 
 run:
   web: npm run start:prod
