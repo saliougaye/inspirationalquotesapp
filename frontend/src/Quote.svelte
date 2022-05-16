@@ -11,6 +11,9 @@
         return await response.json()
     })()
 </script>
+<svelte:head>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
+</svelte:head>
 
 <main id="quote">
     {#await fetchQuote}
@@ -25,7 +28,7 @@
     </div>
     {:then data}
     <div id="quote-box">
-        <Typewriter cascade interval={30}>
+        <Typewriter cascade interval={50}>
 
             <div class="quote">
                 <p>{data[0].quote}</p>
@@ -54,7 +57,6 @@
 </main>
 
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&display=swap');
 
     #quote {
         width: 100%;
@@ -67,7 +69,7 @@
     #quote p,
     #error p {
         color: white;
-        font-family: 'lisFont', 'Amatic SC', 'Dongle',sans-serif;
+        font-family: 'Nunito', 'lisFont';
     }
 
     #quote-box,
