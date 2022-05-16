@@ -12,8 +12,10 @@ class Data {
   }
 
   Future<Quote> fetchQuote() async {
-    final res = await http.get(Uri.parse("$url/api/quote"),
-        headers: {"Accept": "aplication/json"});
+    final res = await http.get(
+      Uri.parse("$url/api/quote"),
+      headers: {"Accept": "aplication/json"},
+    ).timeout(const Duration(seconds: 20));
 
     final data = jsonDecode(res.body);
 

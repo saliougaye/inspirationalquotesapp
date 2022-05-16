@@ -20,7 +20,7 @@ Future<void> main() async {
   await Workmanager().initialize(callbackDispatcher, isInDebugMode: false);
 
   await Workmanager().registerPeriodicTask("3", "periodicTask",
-      frequency: const Duration(minutes: 15));
+      frequency: const Duration(hours: 6));
 
   runApp(const App());
 }
