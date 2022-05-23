@@ -17,6 +17,8 @@ services:
       dockerfile: Dockerfile
     environment:
       - DATABASE_URL=mongodb://root:example@db:27017/inspirationalappdb?authSource=admin&ssl=false
+    ports:
+      - 8080:8080
     depends_on:
       - db
     networks:
@@ -30,17 +32,6 @@ services:
         - API=http://localhost:8080
     depends_on:
       - be
-    networks:
-      - app
-
-  nginx:
-    depends_on:
-      - fe
-    build:
-      context: ./nginx/
-      dockerfile: Dockerfile
-    ports:
-      - '8080:80'
     networks:
       - app
 
