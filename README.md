@@ -21,6 +21,9 @@ Motivational quotes for u
 
 ## ✅ TO-DO
 
+<br/>
+
+**N.B**: Backend and Frontend are deployed on heroku and uses [Kaffeine](https://github.com/RomainButteaud/Kaffeine) to prevent the heroky app go in sleeping mode
 
 <br/>
 
